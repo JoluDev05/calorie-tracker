@@ -1,4 +1,4 @@
-import { Activity } from "../types";
+import type { Activity } from "../types";
 
 export type ActivityActions = 
     { type: 'save-activity', payload: { newActivity: Activity } } 
@@ -21,4 +21,6 @@ export type ActivityActions =
                 // Este codigo maneja la logica para actualizar el state
                 console.log("Desde el type de save activity")
             }
+
+            return state;
     }
