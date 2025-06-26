@@ -23,6 +23,8 @@ export default function ActivityList({ activities }: ActivityListProps) {
                     <p className="font-black text-4xl text-lime-500">
                         {activity.calories} {''}
                         <span>Calorias</span>
+                         
+
                     </p>
 
                 </div>
