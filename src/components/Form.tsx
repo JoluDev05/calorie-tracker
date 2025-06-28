@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';// Importamos la función v4 de la librería 'uuid' y la renombramos como 'uuidv4' // Esta función genera identificadores únicos para cada actividad
-import type { ChangeEvent, Dispatch } from "react";
+import type { ChangeEvent, Dispatch} from "react";
 import type { FormEvent } from "react";
 import type { Activity } from "../types";
 import { categories } from "../data/categories";
-import type { ActivityActions } from "../reducers/activity-reducer";
+import type { ActivityActions, ActivityState } from "../reducers/activity-reducer";
 
 type FormProps = {
-  dispatch: Dispatch<ActivityActions>;
+  dispatch: Dispatch<ActivityActions>,
+  state : ActivityState
 }
 
 const initialState : Activity = {
@@ -18,8 +19,18 @@ const initialState : Activity = {
   }
 
 
-export default function Form({ dispatch }: FormProps) {
+export default function Form({ dispatch, state }: FormProps) {
   const[activity, setActivity] = useState<Activity>(initialState)
+
+  useEffect(() => {
+    if (state.activeId){
+      const selectedActivity = state.activities.filter ( stateActivity => stateActivity.id === state.activeId)[0]
+      setActivity(selectedActivity)
+    }
+  }, [state.activeId]);
+
+
+
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLInputElement>) => {
           const isNumberField = ['category', 'calories'].includes(e.target.id);
