@@ -1,4 +1,4 @@
-import { useReducer,useEffect } from "react";
+import { useReducer,useEffect, useMemo } from "react";
 import Form from "./components/Form";
 import { activityReducer, initialState } from "./reducers/activity-reducer";
 import ActivityList from "./components/ActivityList";
@@ -10,13 +10,22 @@ function App() {
     localStorage.setItem('activities', JSON.stringify(state.activities));
   }, [state.activities]);
 
+  const canRestartApp = () => useMemo(() => state.activities.length , [state.activities]);
   return (
     <>
-      <header>
-        <div className="bg-lime-600 py-3">
-          <h1 className="max-w-4xl mx-auto flex justify-between">
+      <header className="bg-lime-600 py-3">
+        <div className="max-w-4xl mx-auto flex justify-between">
+          <h1 className="text-center text-lg font-bold text-white uppercase">
             Contador de calorias
           </h1>
+
+          <button
+            className="bg-gray-800 hover:bg-gray-900 p-2 font-bold text-white cursor-pointer rounded-lg text-sm"
+            disabled={!canRestartApp()}
+            onClick={() => dispatch({ type: 'restart-app' })}
+          >
+            reiniciar app
+          </button>
         </div>
       </header>
 
