@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type Dispatch } from "react";
 import { v4 as uuidv4 } from 'uuid';// Importamos la función v4 de la librería 'uuid' y la renombramos como 'uuidv4' // Esta función genera identificadores únicos para cada actividad
 import type { ChangeEvent} from "react";
 import type { FormEvent } from "react";
 import type { Activity } from "../types";
+import type { ActivityActions, ActivityState } from "../reducers/activity-reducer";
 import { categories } from "../data/categories";
 import { useActivity } from "../hooks/useActivity";
 
@@ -15,8 +16,15 @@ const initialState : Activity = {
   }
 
 
-export default function Form() {
-  const {state, dispatch} = useActivity();
+type FormProps = {
+  dispatch?: Dispatch<ActivityActions>;
+  state?: ActivityState;
+};
+
+export default function Form(props?: FormProps) {
+  const activityContext = useActivity();
+  const state = props?.state ?? activityContext.state;
+  const dispatch = props?.dispatch ?? activityContext.dispatch;
   const[activity, setActivity] = useState<Activity>(initialState)
 
   useEffect(() => {
